@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="last_update_time">10sp</dimen>
+    <dimen name="common_dimen_big">16dp</dimen>
+
+    <dimen name="divider_height">1px</dimen>
+
+    <dimen name="setting_text_height">48dp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="common_icon_size_small">16dp</dimen>
+    <dimen name="common_dimen_mid">12dp</dimen>
+</resources>

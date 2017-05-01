@@ -1,20 +1,27 @@
 package com.coolweather.android;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,16 +30,20 @@ import com.bumptech.glide.Glide;
 import com.coolweather.android.gson.Forecast;
 import com.coolweather.android.gson.Weather;
 import com.coolweather.android.service.AutoUpdateService;
+import com.coolweather.android.util.About;
 import com.coolweather.android.util.HttpUtil;
 import com.coolweather.android.util.Utility;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class WeatherActivity extends AppCompatActivity {
+public class WeatherActivity extends BaseActivity {
+
+
 
     public DrawerLayout drawerLayout;
     private Button navButton;
@@ -50,6 +61,9 @@ public class WeatherActivity extends AppCompatActivity {
     private TextView sportText;
     private String mWeatherId;
     private ImageView bingPicImg;
+    private ImageView menuImg;
+    private TextView share,setting,about;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +78,16 @@ public class WeatherActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_weather);
 
+        /**
+         * ***********************************************************************************
+         */
+
+        /**
+         * ***********************************************************************************
+         */
+
         //初始化各控件
+        menuImg = (ImageView) findViewById(R.id.menu);
         bingPicImg = (ImageView) findViewById(R.id.bing_pic_img);
         weatherLayout = (ScrollView) findViewById(R.id.weather_layout);
         titleCity = (TextView) findViewById(R.id.title_city);
@@ -92,7 +115,7 @@ public class WeatherActivity extends AppCompatActivity {
         }
 
         if (weatherString != null) {
-            //没有缓存时直接解析天气数据
+            //有缓存时直接解析天气数据
             Weather weather = Utility.handleWeatherResponse(weatherString);
             mWeatherId = weather.basic.weatherId;
             showWeatherInfo(weather);
@@ -114,7 +137,54 @@ public class WeatherActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
+        menuImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopUp(v);
+
+            }
+        });
     }
+
+private void showPopUp(View view) {
+    LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    View contentview = inflater.inflate(R.layout.popup, null);
+    contentview.setFocusable(true); // 这个很重要
+    contentview.setFocusableInTouchMode(true);
+    final PopupWindow popupWindow = new PopupWindow(contentview, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    popupWindow.setFocusable(true);
+    popupWindow.setOutsideTouchable(false);
+
+    share = (TextView) contentview.findViewById(R.id.share_weather) ;
+    setting = (TextView) contentview.findViewById(R.id.setting);
+    about = (TextView) contentview.findViewById(R.id.about);
+
+    share.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    });
+    setting.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(WeatherActivity.this,Setting.class);
+            startActivity(intent);
+
+        }
+    });
+    about.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(WeatherActivity.this,About.class);
+            startActivity(intent);
+
+        }
+    });
+
+    popupWindow.showAsDropDown(view);
+}
+
     /**
      * 根据id请求城市天气信息
      */
@@ -188,7 +258,7 @@ public class WeatherActivity extends AppCompatActivity {
     /**
      * 处理并展示Weather实体类中的数据
      */
-    private void showWeatherInfo(Weather weather) {
+    public void showWeatherInfo(Weather weather) {
         String cityName = weather.basic.cityName;
         String updateTime = weather.basic.update.updateTime.split(" ")[1];
         String degree = weather.now.temperature + "℃";
@@ -231,4 +301,6 @@ public class WeatherActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AutoUpdateService.class);
         startService(intent);
     }
+
+
 }

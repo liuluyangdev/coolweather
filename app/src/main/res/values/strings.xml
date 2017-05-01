@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">曲奇天气</string>
+    <string name="share_weather">  分享天气  </string>
+    <string name="setting">  设 置  </string>
+    <string name="about">  关 于  </string>
+    <string name="last_update_time">最近一次更新时间：</string>
+    <string name="notification_show">显示通知栏</string>
+    <string name="notification_theme">通知栏皮肤</string>
+    <string name="alarm_allow">气象灾害预警</string>
+    <string name="update_allow">自动更新天气</string>
+    <string name="update_schedule">0.5小时</string>
+    <string name="about_info">谢谢使用</string>
+
 </resources>
