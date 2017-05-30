@@ -77,14 +77,16 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/divider_height"
             android:layout_below="@id/alarm_switch"
-            android:background="@color/dividers_black"/>
+            android:background="@color/dividers_black"
+            android:id="@+id/view" />
 
         <TextView
             android:id="@+id/update_allow"
             style="@style/SettingTextStyle"
-            android:layout_below="@id/alarm_switch"
             android:text="@string/update_allow"
-            />
+            android:layout_below="@+id/view"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:id="@+id/update_schedule"
@@ -119,7 +121,8 @@
             android:id="@+id/about"
             style="@style/SettingTextStyle"
             android:layout_below="@id/background_holder2"
-            android:text="@string/about"
+            android:text="@string/version"
+            android:gravity="center"
             />
 
     </RelativeLayout>
